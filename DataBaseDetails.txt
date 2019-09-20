@@ -1,0 +1,7 @@
+Currency_Country : [ Currency_Name ] [ Country ]
+Exchange_Rates : [ From_Currency To_Currency Timestamp ] Ex_Rate
+Login_Details : [ Username ] Password Designation Country Department
+BI : [ Timestamp Submitted_By Country ] Value_Eq
+FDI : [ Timestamp Submitted_By Country ] Value_Eq
+DTT : [ Timestamp Country ] Value_Eq
+TxnInventory : [ Timestamp Country ] Total_Value_Eq

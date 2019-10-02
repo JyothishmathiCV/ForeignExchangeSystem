@@ -1,0 +1,52 @@
+img{
+    float: left;
+    padding: 2px;
+}
+body {
+    background: url(https://images.wallpaperscraft.com/image/coins_money_silver_80483_1920x1080.jpg);
+    /*background-size: cover;*/
+    /*background-position: center; */
+}
+.navbar{
+    background: black;
+}
+#form_container{
+    padding:8px;
+    background:#b3b3b3;
+    width: 300px;
+    height:400px;
+    
+}
+form{
+    font-style: inherit;
+    color: black;
+}
+form button{
+    margin: 10px;
+    align-self: center;
+
+}
+#login{
+    color:white;
+    font-weight: bold;
+    font-size: 16px;
+    /*border:2px solid #afb4bd;*/
+}
+#home_title{
+    font-family: Arvo;
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    /*padding-left: 5px;*/
+    background: black;
+}
+#home_link{
+    /*border:2px solid #afb4bd;*/
+    font-family: Arvo;
+    color: blue;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+}

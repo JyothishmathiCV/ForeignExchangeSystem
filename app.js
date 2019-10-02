@@ -4,76 +4,46 @@ var express = require("express");
 var app = express();
 var fs = require('fs');
 var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
+var data = require("./data.js");
 
-mongoose.connect("mongodb://localhost/forex_sys");
-
+app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine","ejs");
 
-// Create a server object: 
-// http.createServer(function (request, response) {
-//     var path = url.parse(request.url).pathname;
-//     switch (path) {
-//         case '/':
-//             response.writeHead(200, {f
-//                 'Content-Type': 'text/plain'
-//             });
-//             response.write("This is not a useful page.");
-//             response.end();
-//             break;
-//         case '/ForexSys.html':
-//             fs.readFile(__dirname + path, function (error, data) {
-//                 if (error) {
-//                     response.writeHead(404);
-//                     response.write(error);
-//                     response.end();
-//                 } else {
-//                     response.writeHead(200, {
-//                         'Content-Type': 'text/html'
-//                     });
-//                     response.write(data);
-//                     response.end();
-//                 }
-//             });
-//             break;
-//         default:
-//             response.writeHead(404);
-//             response.write("opps this doesn't exist - 404");
-//             response.end();
-//             break;
-//     }
-//     // The server object listens on port 8080 
-// }).listen(8082);
-
-// // var http = require('http');
-// // var fs = require('fs');
-
-// // var server = http.createServer(function (req, res) {
-
-// //     if (req.method === "GET") {
-// //         res.writeHead(200, { "Content-Type": "text/html" });
-// //         fs.createReadStream("./public/form.html", "UTF-8").pipe(res);
-// //     } else if (req.method === "POST") {
-    
-// //         var body = "";
-// //         req.on("data", function (chunk) {
-// //             body += chunk;
-// //         });
-
-// //         req.on("end", function(){
-// //             res.writeHead(200, { "Content-Type": "text/html" });
-// //             res.end(body);
-// //         });
-// //     }
-
-// // }).listen(3000);
+var convertedVal = 0
+var FromCurr = "Choose Currency";
+var ToCurr = "Choose Currency";
+var Val = 0 ;
 
 app.get("/", function(req,res){
-    res.send("Hi");
+    res.render("conversion",{convertedVal : convertedVal, FromCurr : FromCurr, ToCurr : ToCurr, InputVal : Val});
+    //res.render("Forexsystem", {friendsInEjs: frindsInApp.js});
+    //res.redirect("/"); ///////app.post.....form action = /forex method = "POST"
+    convertedVal = 0
+    FromCurr = "Choose Currency";
+    ToCurr = "Choose Currency";
+    Val = 0 ;
+});
+
+
+app.get("/login.ejs", function(req,res){
+    res.render("login");
     //res.render("Forexsystem", {friendsInEjs: frindsInApp.js});
     //res.redirect("/"); ///////app.post.....form action = /forex method = "POST"
 });
+
+app.post("/convert", function(req,res){
+    var fromcurr = req.body.from;
+    var tocurr = req.body.to;
+    var val = req.body.val;
+    data.convert(fromcurr,tocurr,val,function(results){
+        convertedVal = results;
+        FromCurr = fromcurr;
+        ToCurr = tocurr;
+        Val = val ;
+        res.redirect("/");
+    });
+})
 
 app.listen(3000, function(){
     console.log("Listening on port 3000!");

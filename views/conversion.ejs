@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Forex System</title>
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="conversion.css" >
-        <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
-    </head>
-    <body>
+<% include partials/header %>
     	<nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
@@ -25,40 +17,38 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-nav-demo">
                     <ul class="nav navbar-nav navbar-right">
-                        <li id="login"><a href="#" title="login">Login</a></li>
+                        <li id="login"><a href="/login.ejs" title="login">Login</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container" id="form_container">
-                <form>
+                <form action="/convert" method="POST">
                         <h3>Exchange Rate Calculator</h3>
-                        <div class="form-group">
-                          <label for="from">From:</label>
-                          <select id="from">
-                                <option value="" disabled selected>Choose your Currency</option>
-                                <option>Rupees</option>
-                                <option>Dollars</option>
+                        <div name="fromcurr" id="fromcurr" class="form-group">
+                          <label  for="from">From:</label>
+                          <select name="from" id="from">
+                                <option  value="" disabled selected><%= FromCurr %></option>
+                                <option >Rupees</option>
+                                <option >Dollar</option>
                           </select>
                           <label for="from_value">Value:</label>
-                          <input type="number" id="from_value" placeholder="0" required>
+                          <input type="number" name = "val" id="from_value" placeholder="<%= InputVal %>" required>
                         </div>
-                        <div class="form-group">
-                                <label for="to">To:</label>
-                                <select id="to">
-                                      <option value="" disabled selected>Choose your Currency</option>
+                        <div name="tocurr" id ="tocurr" class="form-group">
+                                <label name  = "to" for="to">To:</label>
+                                <select name="to" id="to">
+                                      <option value="" disabled selected><%= ToCurr %></option>
                                       <option>Rupees</option>
-                                      <option>Dollars</option>
+                                      <option>Dollar</option>
                                 </select>
                                 <label for="to_value">Value:</label>
-                                <input type="number" id="to_value" placeholder="0">
+                                <input  type="number" id="to_value" placeholder="<%= convertedVal %>"">
                         </div>
                         <div class="text-center"> 
                         <button type="submit" class="btn btn-primary">Convert</button>
                         </div>
                 </form>
         </div>
-        <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    </body>
-</html>
+
+<% include partials/footer %>

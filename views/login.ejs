@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Forex System</title>
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="login.css" >
-        <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
-    </head>
-    <body>
+<% include partials/header %>
+
     	<nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
@@ -42,11 +35,12 @@
                             <option>BI</option>
                             <option>DTT</option>
                             <option>FDI</option>
+                            <option>Bank</option>
+                            <option>Company</option>
+                            <option>Central Finance Department</option>
                         </select>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Login</button>
                 </form>
         </div>
-        <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    </body>
-</html>
+
+        <% include partials/footer %>

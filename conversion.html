@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Forex System</title>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="conversion.css" >
+        <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+    </head>
+    <body>
+    	<nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-nav-demo" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+                </div>
+                <div class="nav navbar-nav navbar-left">
+                    <a href="#"><img src="https://cdn.worldvectorlogo.com/logos/forex-1.svg" width="82" height="60" title="Forex System" id="home_link"></a>
+                </div>
+                <div class="nav navbar-nav navbar-default">
+                    <p id="home_title">FOREX SYSTEM</p>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-nav-demo">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li id="login"><a href="#" title="login">Login</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container" id="form_container">
+                <form>
+                        <h3>Exchange Rate Calculator</h3>
+                        <div class="form-group">
+                          <label for="from">From:</label>
+                          <select id="from">
+                                <option value="" disabled selected>Choose your Currency</option>
+                                <option>Rupees</option>
+                                <option>Dollars</option>
+                          </select>
+                          <label for="from_value">Value:</label>
+                          <input type="number" id="from_value" placeholder="0" required>
+                        </div>
+                        <div class="form-group">
+                                <label for="to">To:</label>
+                                <select id="to">
+                                      <option value="" disabled selected>Choose your Currency</option>
+                                      <option>Rupees</option>
+                                      <option>Dollars</option>
+                                </select>
+                                <label for="to_value">Value:</label>
+                                <input type="number" id="to_value" placeholder="0">
+                        </div>
+                        <div class="text-center"> 
+                        <button type="submit" class="btn btn-primary">Convert</button>
+                        </div>
+                </form>
+        </div>
+        <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    </body>
+</html>

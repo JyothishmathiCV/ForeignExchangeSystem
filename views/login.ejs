@@ -20,24 +20,24 @@
             </div>
         </nav>
         <div class="container" id="form_container">
-                <form>
+                <form action="/logindet" method="POST">
                         <div class="form-group">
                           <label for="Email">Username</label>
-                          <input type="email" class="form-control" id="Email" aria-describedby="emailHelp" placeholder="Enter Username">
+                          <input name="username" type="text" class="form-control" id="Email" placeholder="Enter Username">
                           
                         </div>
                         <div class="form-group">
                           <label for="Password">Password</label>
-                          <input type="password" class="form-control" id="Password" placeholder="Password">
+                          <input name="password" type="password" class="form-control" id="Password" placeholder="Password">
                         </div>
                         <label for="dept">Select Department</label>
-                        <select class="form-control" id="dept">
+                        <select name="dept" class="form-control" id="dept">
                             <option>BI</option>
                             <option>DTT</option>
                             <option>FDI</option>
                             <option>Bank</option>
                             <option>Company</option>
-                            <option>Central Finance Department</option>
+                            <option>CentralFinanceDepartment</option>
                         </select>
                         <button type="submit" class="btn btn-primary">Login</button>
                 </form>

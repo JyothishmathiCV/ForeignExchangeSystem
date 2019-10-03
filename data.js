@@ -63,6 +63,12 @@ var TxnInventorySchema = new mongoose.Schema({
     TotalValueEq : Number
 });
 
+//Notifications : [ username ] notification 
+var notificationsShema = new mongoose.Schema({
+    Username : String,
+    Notification : String
+});
+
 var currencyCountry = mongoose.model("currencyCountry", currencyCountrySchema);
 var exchangeRates = mongoose.model("exchangeRates",exchangeRatesSchema);
 var loginDetails = mongoose.model("loginDetails", loginDetailsSchema);
@@ -71,6 +77,7 @@ var FDI = mongoose.model("FDI", FDISchema);
 var DTT = mongoose.model("DTT", DTTSchema);
 var TxnInventory = mongoose.model("TxnInventory", TxnInventorySchema);
 var loginDetails = mongoose.model("loginDetails", loginDetailsSchema);
+var notifications = mongoose.model("notifications",notificationsShema);
 
 var convert = function (from,to,value,callback){
 
@@ -81,7 +88,22 @@ var convert = function (from,to,value,callback){
             callback(Number(exrate[0].ExRate)*value); 
         }
     });
-};
+}
+
+var login = function (usrn,pass,dept,callback){
+    loginDetails.find({Username : String(usrn), Password : String(pass), Department : String(dept)}, function(err,details){
+        if(err){
+            console.log(err);
+        } else {
+            // console.log(details.length);
+            if(details.length == 0){
+                callback(false);
+            } else {
+                callback(details[0].Designation);
+            }
+        }
+    });
+}
 
 // convert("Dollar", "Rupees", 10, function (val){
 //     console.log(val);
@@ -89,5 +111,6 @@ var convert = function (from,to,value,callback){
 
 
 module.exports = {
-    convert : convert
+    convert : convert,
+    login : login
 }

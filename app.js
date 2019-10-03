@@ -5,15 +5,21 @@ var app = express();
 var fs = require('fs');
 var bodyParser = require("body-parser");
 var data = require("./data.js");
+var cookieParser = require("cookie-parser");
+
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(cookieParser());
 app.set("view engine","ejs");
 
 var convertedVal = 0
 var FromCurr = "Choose Currency";
 var ToCurr = "Choose Currency";
 var Val = 0 ;
+var usrn = "";
+var dept = "";
+var designation = "";
 
 app.get("/", function(req,res){
     res.render("conversion",{convertedVal : convertedVal, FromCurr : FromCurr, ToCurr : ToCurr, InputVal : Val});
@@ -28,9 +34,41 @@ app.get("/", function(req,res){
 
 app.get("/login.ejs", function(req,res){
     res.render("login");
-    //res.render("Forexsystem", {friendsInEjs: frindsInApp.js});
-    //res.redirect("/"); ///////app.post.....form action = /forex method = "POST"
 });
+
+app.get("/bi_officer.ejs", function(req,res){
+    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );    
+});
+
+app.get("/fdi_officer.ejs", function(req,res){
+    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );           
+});
+
+app.get("/dtt_officer.ejs", function(req,res){
+    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );           
+});
+
+app.get("/bank_activity.ejs",function(req,res){
+    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+});
+
+app.get("/company_activity.ejs",function(req,res){
+    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );   
+});
+
+app.get("/authority.ejs",function(req,res){
+    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+});
+app.get("/company_activity.ejs",function(req,res){
+    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+});
+app.get("/biauthority.ejs",function(req,res){
+    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+});
+app.get("/financialhead_activity.ejs",function(req,res){
+    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+});
+
 
 app.post("/convert", function(req,res){
     var fromcurr = req.body.from;
@@ -43,7 +81,46 @@ app.post("/convert", function(req,res){
         Val = val ;
         res.redirect("/");
     });
-})
+});
+
+app.post("/logindet",function(req,res){
+    usrn = req.body.username;
+    var pass = req.body.password;
+    dept = req.body.dept;
+    data.login(usrn,pass,dept,function(results){
+        // console.log(results);
+        if(results == false){
+            //handle cases
+            res.redirect("/login.ejs");
+        } else {
+            designation = results;
+            res.cookie('My details',{ usrn : String(usrn) , dept : String(dept) , designation : String(designation)});
+            if (String(designation) == "Officer"){
+                switch(String(dept)){
+                    case "BI" : res.redirect("/bi_officer.ejs");break;
+                    case "DTT" :  res.redirect("/dtt_officer.ejs");break;
+                    case "FDI" :  res.redirect("/fdi_officer.ejs");break;
+                }
+            } else if(String(designation) == "Chairman") {
+                switch(String(dept)){
+                    case "Bank" : res.redirect("/bank_activity.ejs");break;
+                    // case "Company" : res.redirect("/company_activity.ejs");break;
+                    case "FDI" : res.redirect("/authority.ejs");break;
+                    case "DTT" : res.redirect("/authority.ejs");break;
+                }
+
+            } else if(String(designation) == "CEO") {
+                res.redirect("/company_activity.ejs");
+            } else if(String(designation) == "Governor") {
+                res.redirect("/biauthority.ejs");
+            } else if(String(designation) == "FinancialHead") {
+                res.redirect("/financialhead_activity.ejs");
+            }else {
+                res.send("Failure");
+            }
+        }
+    });
+});
 
 app.listen(3000, function(){
     console.log("Listening on port 3000!");

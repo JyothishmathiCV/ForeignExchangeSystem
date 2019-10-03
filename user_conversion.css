@@ -9,6 +9,25 @@ body {
     /*background-size: cover;*/
     /*background-position: center; */
 }
+.sidenav label{
+    margin-left:4px;
+    color: white;
+}
+#username{
+    width: 75%;
+    margin: 10px;
+    margin-top: 0px;
+}
+#designation{
+    width: 75%;
+    margin: 10px;
+    margin-top: 0px;
+}
+#department{
+    width: 75%;
+    margin: 10px;    
+    margin-top: 0px;
+}
 label{
     text-align: center;
     margin-left: 105px;

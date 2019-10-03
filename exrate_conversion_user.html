@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>FDI Officer</title>
+        <title>Exchange Rate Conversion-User</title>
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="officer.css" >
+        <link rel="stylesheet" type="text/css" href="user_conversion.css" >
         <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
     </head>
     <body>
         <div id="mySidenav" class="sidenav">
             
-            <a href="#" id="notifications">Home</a>
-            <a href="#" id="submit">Submit</a>
+            <a href="#" id="home">Home</a>
             <a href="#" id="conversion">Conversion</a>
             <form>
                 
@@ -48,15 +47,35 @@
                 </div>
             </div>
         </nav>
-        <h3>Notifications</h3>
-        <!--TABLE FOR NOTIFICATIONS AND ANNOUNCEMENTS-->
-        <table>
-            <tbody>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-            </tbody>
-        </table>
+        <div class="container" id="form_container">
+                <form>
+                        <h3>Exchange Rate Calculator</h3>
+                        <div class="form-group">
+                          <label for="from">From:</label>
+                          <select id="from">
+                                <option value="" disabled selected>Choose your Currency</option>
+                                <option>Rupees</option>
+                                <option>Dollars</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="to">To:</label>
+                                <select id="to">
+                                      <option value="" disabled selected>Choose your Currency</option>
+                                      <option>Rupees</option>
+                                      <option>Dollars</option>
+                                </select>
+                        </div>
+                        <div class="text-center"> 
+                        <button type="submit" class="btn btn-primary">Convert</button>
+                        </div>
+                        <div>
+                                <label for="ex_rate">Exchange Rate:</label>
+                                <input type="number" id="ex_rate" placeholder="0">
+                        </div>
+                </form>
+        </div>
+        </div>
         <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </body>

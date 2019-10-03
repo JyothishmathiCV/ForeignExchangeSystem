@@ -1,36 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Print Notes-Officer</title>
+        <title>Forex System</title>
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="printnotes.css" >
+        <link rel="stylesheet" type="text/css" href="conversion.css" >
         <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div id="mySidenav" class="sidenav">
-            
-                    <a href="#" id="notifications">Home</a>
-                    <a href="#" id="submit">Submit</a>
-                    <a href="#" id="print_notes">Print Notes</a>
-                    <a href="#" id="conversion">Conversion</a>
-                    <form>
-                
-                        <div class="form-group"> 
-                            <label for="username">Username:</label>
-                            <input type="number" id="username" placeholder="Username">
-                            <label for="username">Designation:</label>
-                            <input type="number" id="designation" placeholder="Designation">
-                            <label for="username">Department:</label>
-                            <input type="number" id="department" placeholder="Department">
-                        </div>
-                    </form>
-        </div>
-                          
-        <!-- Use any element to open the sidenav -->
-        <span onclick="openNav()">open</span>
-                          
-        <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
-        <div class="main" id="main">
     	<nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
@@ -56,16 +32,31 @@
         </nav>
         <div class="container" id="form_container">
                 <form>
-                        <h3>Notes Printing</h3>
+                        <h3>Exchange Rate Calculator</h3>
                         <div class="form-group">
-                            <label for="from_value">Total Value:</label>
-                            <input type="number" id="from_value" placeholder="0" required>
+                          <label for="from">From:</label>
+                          <select id="from">
+                                <option value="" disabled selected>Choose your Currency</option>
+                                <option>Rupees</option>
+                                <option>Dollars</option>
+                          </select>
+                          <label for="from_value">Value:</label>
+                          <input type="number" id="from_value" placeholder="0" required>
+                        </div>
+                        <div class="form-group">
+                                <label for="to">To:</label>
+                                <select id="to">
+                                      <option value="" disabled selected>Choose your Currency</option>
+                                      <option>Rupees</option>
+                                      <option>Dollars</option>
+                                </select>
+                                <label for="to_value">Value:</label>
+                                <input type="number" id="to_value" placeholder="0">
                         </div>
                         <div class="text-center"> 
-                            <button type="submit" class="btn btn-primary">Print Notes</button>
+                        <button type="submit" class="btn btn-primary">Convert</button>
                         </div>
                 </form>
-        </div>
         </div>
         <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

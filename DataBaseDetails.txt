@@ -5,3 +5,4 @@ BI : [ Timestamp Submitted_By Country ] Value_Eq
 FDI : [ Timestamp Submitted_By Country ] Value_Eq
 DTT : [ Timestamp Country ] Value_Eq
 TxnInventory : [ Timestamp Country ] Total_Value_Eq
+//Notifications : [ username ] Timestamp notification 

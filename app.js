@@ -37,7 +37,15 @@ app.get("/login.ejs", function(req,res){
 });
 
 app.get("/bi_officer.ejs", function(req,res){
-    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );    
+    data.getNotifications(String(req.cookies['My details'].usrn),function(results){
+        console.log(results[0]['Notification']);
+        res.render("bi_officer",{
+            usern : String(req.cookies['My details'].usrn),
+            desgn : String(req.cookies['My details'].designation),
+            dept : String(req.cookies['My details'].dept),
+            notifications : results
+        }); 
+    });   
 });
 
 app.get("/fdi_officer.ejs", function(req,res){
@@ -120,6 +128,10 @@ app.post("/logindet",function(req,res){
             }
         }
     });
+});
+
+app.post("/bi_officer_home",function(req,res){
+    res.redirect("/bi_officer.ejs");
 });
 
 app.listen(3000, function(){

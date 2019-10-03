@@ -63,9 +63,10 @@ var TxnInventorySchema = new mongoose.Schema({
     TotalValueEq : Number
 });
 
-//Notifications : [ username ] notification 
+//Notifications : [ username ] Timestamp notification 
 var notificationsShema = new mongoose.Schema({
     Username : String,
+    Timestamp : Date,
     Notification : String
 });
 
@@ -105,6 +106,19 @@ var login = function (usrn,pass,dept,callback){
     });
 }
 
+var getNotifications = function(usrn,callback){
+    notifications.find({Username : usrn},function(err,results){
+        if(err){
+            console.log(err);
+        } else {
+            // console.log(results);
+            callback(results);
+        }
+    });
+}
+
+
+
 // convert("Dollar", "Rupees", 10, function (val){
 //     console.log(val);
 // });
@@ -112,5 +126,6 @@ var login = function (usrn,pass,dept,callback){
 
 module.exports = {
     convert : convert,
-    login : login
+    login : login,
+    getNotifications : getNotifications
 }

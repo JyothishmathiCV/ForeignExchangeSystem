@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Print Notes-Officer</title>
+        <title>BI-Submit</title>
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="printnotes_authority.css" >
+        <link rel="stylesheet" type="text/css" href="authority_activity.css" >
         <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
     </head>
     <body>
@@ -71,18 +71,47 @@
         </nav>
         <div class="container" id="form_container">
                 <form>
-                        <h3>Notes Printing</h3>
+                        <h3>BI Officer Submission</h3>
                         <div class="form-group">
-                            <label for="from_value">Value:</label>
-                            <input type="number" id="from_value" placeholder="0" required>
+                                <label for="from">From:</label>
+                                <select id="from">
+                                      <option value="" disabled selected>Choose Currency Type</option>
+                                      <option>Shares</option>
+                                      <option>Digital Currency</option>
+                                      <option>Gold</option>
+                                      <option>Property</option>
+                                      <option>Liquid Cash</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date:</label>
+                            <input type="date" id="date" placeholder="01/01/2000" required>
                         </div>
                         <div class="form-group"> 
-                            <button type="submit" class="btn btn-primary" id="calc_exrate">Calculate ExRate</button>
-                            <input type="number" id="new_exrate" placeholder="New Exchange Rate">
+                            <button type="submit" class="btn btn-primary" id="history">Show History</button>
+                            
                         </div>
-                        <div class="text-center"> 
-                            <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                        <div> 
+                            <button type="submit" class="btn btn-primary" id="calc_exrate">Calculate Total ValueEq</button>
+                            <input type="number" id="new_valeq" placeholder="Total Value Equivalent">
                         </div>
+                        <!--HISTORY OF SUBMISSIONS-->
+                        <table>
+                        <tbody>
+                        <tr>
+                            <td>From</td>
+                            <td>Value Eq</td>
+                            <td>Date</td>
+                            <td>Type</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                        </table>
                 </form>
         </div>
         </div>

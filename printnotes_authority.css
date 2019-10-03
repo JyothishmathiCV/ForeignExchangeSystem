@@ -9,6 +9,9 @@ body {
     /*background-size: cover;*/
     /*background-position: center; */
 }
+form button{
+    margin:10px;
+}
 .sidenav label{
     margin-left:4px;
     color: white;

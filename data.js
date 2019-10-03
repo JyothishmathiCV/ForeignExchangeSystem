@@ -129,6 +129,88 @@ var convertUser = function (from,to,callback){
    });
 }
 
+var submit = function (SubmittedBy,CurrencyName,ValueEq,Department,callback){
+    if (Department == "BI"){
+        BI.create({
+            Timestamp : new Date(),
+            SubmittedBy : SubmittedBy,
+            CurrencyName : CurrencyName,
+            ValueEq : ValueEq
+        }, function(err, curr){
+            if(err){
+                console.log(err);
+            } else {
+                console.log("IN BI");
+                console.log(curr);
+                callback(true);
+            }
+        });
+    } else if (Department == "FDI"){
+        
+        FDI.create({
+            Timestamp : new Date(),
+            SubmittedBy : SubmittedBy,
+            CurrencyName : CurrencyName,
+            ValueEq : ValueEq
+        }, function(err, curr){
+            if(err){
+                console.log(err);
+            } else {
+                console.log(curr);
+                callback(true);
+            }
+        });
+    } else if (Department == "DTT"){
+        //
+        DTT.create({
+            Timestamp : new Date(),
+            CurrencyName : CurrencyName,
+            ValueEq : ValueEq
+        }, function(err, curr){
+            if(err){
+                console.log(err);
+            } else {
+                console.log(curr);
+                callback(true);
+            }
+        });
+    }
+}
+
+var getCountry = function(name, callback){
+    loginDetails.find({Username : String(name)},function(err,res){
+        if(err){
+            console.log(err);
+        } else {
+            callback(res[0]["Country"]);
+        }
+    });
+}
+
+var getCurrencyName = function(Country, callback){
+    currencyCountry.find({Country : String(Country)},function(err,res){
+        if(err){
+            console.log(err);
+        } else {
+            callback(res[0]["CurrencyName"]);
+        }
+    });
+}
+
+var notify = function (message,submittedTo,callback){
+    notifications.create({
+        Username : submittedTo,
+        Timestamp : new Date(),
+        Notification : message
+    },function(err,res){
+        if(err){
+            console.log(err);
+        } else {
+            console.log(res);
+            callback(true);
+        }
+    });
+}
 
 
 // convert("Dollar", "Rupees", 10, function (val){
@@ -140,5 +222,9 @@ module.exports = {
     convert : convert,
     login : login,
     getNotifications : getNotifications,
-    convertUser : convertUser
+    convertUser : convertUser,
+    submit : submit,
+    getCountry : getCountry,
+    getCurrencyName : getCurrencyName,
+    notify : notify
 }

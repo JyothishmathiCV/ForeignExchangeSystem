@@ -39,7 +39,7 @@ app.get("/login.ejs", function(req,res){
 
 app.get("/bi_officer.ejs", function(req,res){
     data.getNotifications(String(req.cookies['My details'].usrn),function(results){
-        console.log(results[0]['Notification']);
+        // console.log(results[0]['Notification']);
         res.render("bi_officer",{
             usern : String(req.cookies['My details'].usrn),
             desgn : String(req.cookies['My details'].designation),
@@ -63,14 +63,41 @@ app.get("/exrate_conversion_user.ejs",function(req,res){
     ToCurr = "Choose Currency";
 });
 
-// -------------------------------------------------------------------------------------------------------
+app.get("/biofficer_print.ejs",function(req,res){
+    res.render("biofficer_printnotes",{
+        usern : String(req.cookies['My details'].usrn),
+        desgn : String(req.cookies['My details'].designation),
+        dept : String(req.cookies['My details'].dept)
+    });
+});
+
 app.get("/fdi_officer.ejs", function(req,res){
-    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );           
+    // res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );           
+    data.getNotifications(String(req.cookies['My details'].usrn),function(results){
+        // console.log(results[0]['Notification']);
+        res.render("fdi_officer",{
+            usern : String(req.cookies['My details'].usrn),
+            desgn : String(req.cookies['My details'].designation),
+            dept : String(req.cookies['My details'].dept),
+            notifications : results
+        }); 
+    }); 
 });
 
 app.get("/dtt_officer.ejs", function(req,res){
-    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );           
+    // res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );           
+    data.getNotifications(String(req.cookies['My details'].usrn),function(results){
+        // console.log(results[0]['Notification']);
+        res.render("dtt_officer",{
+            usern : String(req.cookies['My details'].usrn),
+            desgn : String(req.cookies['My details'].designation),
+            dept : String(req.cookies['My details'].dept),
+            notifications : results
+        }); 
+    }); 
 });
+
+// -------------------------------------------------------------------------------------------------------
 
 app.get("/bank_activity.ejs",function(req,res){
     res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
@@ -128,7 +155,7 @@ app.post("/logindet",function(req,res){
                 }
             } else if(String(designation) == "Chairman") {
                 switch(String(dept)){
-                    case "Bank" : res.redirect("/bank_activity.ejs");break;
+                    case "Bank" : res.redirect("/bank_activity.ejs");break;//------------------
                     // case "Company" : res.redirect("/company_activity.ejs");break;
                     case "FDI" : res.redirect("/authority.ejs");break;
                     case "DTT" : res.redirect("/authority.ejs");break;
@@ -186,11 +213,39 @@ app.post("/officer_submit",function(req,res){
     
 });
 
+// ----------------------------------------------------------
+
 app.post("/bi_officer_printnotes",function(req,res){
-    res.send("BI OFFICER PRINT NOTES");
+    res.redirect("/biofficer_print.ejs");
 });
 
-// ----------------------------------------------------------
+app.post("/print_notes",function(req,res){
+    var ValueEq = Number(req.body.from_value);
+    var SubmittedBy = String(req.cookies['My details'].usrn);
+    data.getCountry(SubmittedBy,function(results){
+        console.log("Country " + String(results));
+        data.getCurrencyName(results,function(rest){
+            console.log("CurrencyName " + String(rest));
+            data.submit(SubmittedBy, rest, ValueEq, "BI", function(reslts){
+                if(reslts == true){
+                    var submittedTo = "";
+                    if(String(results) == "India"){
+                        submittedTo = "Rakhi";
+                    } else {
+                        submittedTo = "Riya";
+                    }
+                    data.notify("Notes Printed Submitted",submittedTo, function(resp){
+                        console.log("Submitted!!!!");
+                        console.log(resp);
+                        res.redirect("/biofficer_print.ejs");
+                    });
+                } else {
+                    res.send("Invalid");
+                }
+            });
+        });
+    });
+});
 
 app.listen(3000, function(){
     console.log("Listening on port 3000!");

@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Exchange Rate Conversion-User</title>
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="user_conversion.css" >
-        <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
-    </head>
-    <body>
+<% include partials/user_conversion_header %>
         <div id="mySidenav" class="sidenav">
             <div class="container">
-                <form action="">
+                <form action="/officer_home"  method="POST">
                         <button type="submit" class="btn btn-primary">Home</button>
                 </form>
             </div>
             <div class="container">
-                        <form action="">
+                        <form action="/gen_conversion" method="POST">
                                 <button type="submit" class="btn btn-primary">Conversion</button>
                         </form>
             </div>
@@ -22,11 +14,11 @@
                 
                 <div class="form-group"> 
                     <label for="username">Username:</label>
-                    <input type="number" id="username" placeholder="Username">
+                    <input type="number" id="username" placeholder="<%= Username %>">
                     <label for="username">Designation:</label>
-                    <input type="number" id="designation" placeholder="Designation">
+                    <input type="number" id="designation" placeholder="<%= Designation %>">
                     <label for="username">Department:</label>
-                    <input type="number" id="department" placeholder="Department">
+                    <input type="number" id="department" placeholder=" <%= Department %>">
                 </div>
             </form>
         </div>
@@ -54,28 +46,28 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-nav-demo">
                         <ul class="nav navbar-nav navbar-right">
-                            <li id="login"><a href="#" title="login">Logout</a></li>
+                            <li id="login"><a href="/login.ejs" title="login">Logout</a></li>
                         </ul>
                 </div>
             </div>
         </nav>
         <div class="container" id="form_container">
-                <form>
+                <form action="/convertUser" method="POST">
                         <h3>Exchange Rate Calculator</h3>
-                        <div class="form-group">
+                        <div name="fromcurr" class="form-group">
                           <label for="from">From:</label>
-                          <select id="from">
-                                <option value="" disabled selected>Choose your Currency</option>
+                          <select name="from" id="from">
+                                <option value="" disabled selected><%= FromCurr %></option>
                                 <option>Rupees</option>
-                                <option>Dollars</option>
+                                <option>Dollar</option>
                           </select>
                         </div>
-                        <div class="form-group">
+                        <div name="tocurr" class="form-group">
                                 <label for="to">To:</label>
-                                <select id="to">
-                                      <option value="" disabled selected>Choose your Currency</option>
+                                <select name="to" id="to">
+                                      <option value="" disabled selected><%= ToCurr %></option>
                                       <option>Rupees</option>
-                                      <option>Dollars</option>
+                                      <option>Dollar</option>
                                 </select>
                         </div>
                         <div class="text-center"> 
@@ -83,12 +75,10 @@
                         </div>
                         <div>
                                 <label for="ex_rate">Exchange Rate:</label>
-                                <input type="number" id="ex_rate" placeholder="0">
+                                <input type="number" id="ex_rate" placeholder="<%= convertedVal %>"">
                         </div>
                 </form>
         </div>
         </div>
-        <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    </body>
-</html>
+<% include partials/footer %>
+        

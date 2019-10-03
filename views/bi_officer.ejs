@@ -1,13 +1,13 @@
 <% include partials/officer_header %>
         <div id="mySidenav" class="sidenav">
             <div class="container" id="form_container1">
-                <form action="/bi_officer_home" method="POST">
+                <form action="/officer_home" method="POST">
                     <button type="submit" class="btn btn-primary">Home</button>
                     <!-- <a href="#" id="notifications">Home</a> -->
                 </form>
             </div>
             <div class="container" id="form_container2">
-                <form action="/bi_officer_submit" method="POST">
+                <form action="/officer_submit" method="POST">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <!-- <a href="#" id="notifications">Home</a> -->
                 </form>
@@ -58,6 +58,11 @@
                 </div>
                 <div class="nav navbar-nav navbar-default">
                     <p id="home_title">FOREX SYSTEM</p>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-nav-demo">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li id="login"><a href="/login.ejs" title="login">Logout</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>

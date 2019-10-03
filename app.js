@@ -33,6 +33,7 @@ app.get("/", function(req,res){
 
 
 app.get("/login.ejs", function(req,res){
+    res.clearCookie('My details');
     res.render("login");
 });
 
@@ -48,6 +49,21 @@ app.get("/bi_officer.ejs", function(req,res){
     });   
 });
 
+app.get("/exrate_conversion_user.ejs",function(req,res){
+    res.render("exrate_conversion_user",{
+        convertedVal : convertedVal, 
+        FromCurr : FromCurr, 
+        ToCurr : ToCurr,
+        Username : String(req.cookies['My details'].usrn),
+        Designation : String(req.cookies['My details'].designation),
+        Department : String(req.cookies['My details'].dept)
+    });
+    convertedVal = 0
+    FromCurr = "Choose Currency";
+    ToCurr = "Choose Currency";
+});
+
+// -------------------------------------------------------------------------------------------------------
 app.get("/fdi_officer.ejs", function(req,res){
     res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );           
 });
@@ -76,6 +92,7 @@ app.get("/biauthority.ejs",function(req,res){
 app.get("/financialhead_activity.ejs",function(req,res){
     res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
 });
+// -----------------------------------------------------------------------------------------------------------
 
 
 app.post("/convert", function(req,res){
@@ -130,9 +147,50 @@ app.post("/logindet",function(req,res){
     });
 });
 
-app.post("/bi_officer_home",function(req,res){
-    res.redirect("/bi_officer.ejs");
+app.post("/officer_home",function(req,res){
+    if(String(req.cookies['My details'].dept) == "BI"){
+        res.redirect("/bi_officer.ejs");
+    } else if (String(req.cookies['My details'].dept) == "DTT"){
+        res.redirect("/dtt_officer.ejs");
+    } else if (String(req.cookies['My details'].dept) == "FDI"){
+        res.redirect("/fdi_officer.ejs");
+    }
 });
+
+app.post("/gen_conversion",function(req,res){
+    res.redirect("/exrate_conversion_user.ejs");
+});
+
+app.post("/convertUser", function(req,res){
+    var fromcurr = req.body.from;
+    var tocurr = req.body.to;
+    // var val = req.body.val;
+    data.convertUser(fromcurr,tocurr,function(results){
+        convertedVal = results;
+        FromCurr = fromcurr;
+        ToCurr = tocurr;
+        // Val = val ;
+        res.redirect("/exrate_conversion_user.ejs");
+    });
+});
+
+// ---------------------------------------------------------
+app.post("/officer_submit",function(req,res){ 
+    if(String(req.cookies['My details'].dept) == "BI"){
+        res.send("BI OFFICER SUBMIT");
+    } else if(String(req.cookies['My details'].dept) == "DTT"){
+        res.send("DTT OFFICER SUBMIT");
+    } else if(String(req.cookies['My details'].dept) == "FDI"){
+        res.send("FDI OFFICER SUBMIT");
+    }
+    
+});
+
+app.post("/bi_officer_printnotes",function(req,res){
+    res.send("BI OFFICER PRINT NOTES");
+});
+
+// ----------------------------------------------------------
 
 app.listen(3000, function(){
     console.log("Listening on port 3000!");

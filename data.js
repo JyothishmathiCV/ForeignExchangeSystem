@@ -117,6 +117,18 @@ var getNotifications = function(usrn,callback){
     });
 }
 
+var convertUser = function (from,to,callback){
+
+    return exchangeRates.find({FromCurrency : String(from), ToCurrency : String(to)}, function(err,exrate){
+       if(err){
+           console.log(err);
+       } else {
+        //    console.log(exrate[0].ExRate);
+           callback(Number(exrate[0].ExRate)); 
+       }
+   });
+}
+
 
 
 // convert("Dollar", "Rupees", 10, function (val){
@@ -127,5 +139,6 @@ var getNotifications = function(usrn,callback){
 module.exports = {
     convert : convert,
     login : login,
-    getNotifications : getNotifications
+    getNotifications : getNotifications,
+    convertUser : convertUser
 }

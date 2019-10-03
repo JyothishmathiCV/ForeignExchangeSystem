@@ -10,23 +10,29 @@ body {
     /*background-position: center; */
 }
 .sidenav label{
-  margin-left:4px;
-  color: white;
+    margin-left:4px;
+    color: white;
 }
 #username{
-  width: 75%;
-  margin: 10px;
-  margin-top: 0px;
+    width: 75%;
+    margin: 10px;
+    margin-top: 0px;
 }
 #designation{
-  width: 75%;
-  margin: 10px;
-  margin-top: 0px;
+    width: 75%;
+    margin: 10px;
+    margin-top: 0px;
 }
 #department{
-  width: 75%;
-  margin: 10px;    
-  margin-top: 0px;
+    width: 75%;
+    margin: 10px;    
+    margin-top: 0px;
+}
+#form_container{
+    padding:8px;
+    background:#b3b3b3;
+    width: 550px;
+    height:400px;   
 }
 label{
     text-align: center;
@@ -36,13 +42,30 @@ label{
     background: black;
 }
 table{
-    border: 4px solid black;
+    border: 2px solid black;
+    background: white;
+    margin: 25px auto;
+}
+td{
+    border: 2px solid black; 
+    padding:10px;
 }
 h3{
-    color:white;
+    text-align: center;
     font-weight: 600;
 }
-
+#from_value{  
+    width: 230px;
+    margin-left: 30px;
+}
+form{
+    font-style: inherit;
+    color: black;
+}
+form button{
+    margin-left: 50px;
+    
+}
 #home_title{
     font-family: Arvo;
     color: white;

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Print Notes-Officer</title>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="printnotes_authority.css" >
+        <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div id="mySidenav" class="sidenav">
+                <div class="container">
+                        <form action="">
+                                <button type="submit" class="btn btn-primary">Home</button>
+                        </form>
+                    </div>
+                    <div class="container">
+                            <form action="">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                    </div>
+                    <div class="container">
+                            <form action="">
+                                    <button type="submit" class="btn btn-primary">Print Notes</button>
+                            </form>
+                    </div>
+                    <div class="container">
+                                <form action="">
+                                        <button type="submit" class="btn btn-primary">Conversion</button>
+                                </form>
+                    </div>
+                    <form>
+                
+                        <div class="form-group"> 
+                            <label for="username">Username:</label>
+                            <input type="number" id="username" placeholder="Username">
+                            <label for="username">Designation:</label>
+                            <input type="number" id="designation" placeholder="Designation">
+                            <label for="username">Department:</label>
+                            <input type="number" id="department" placeholder="Department">
+                        </div>
+                    </form>
+        </div>
+                          
+        <!-- Use any element to open the sidenav -->
+        <span onclick="openNav()">open</span>
+                          
+        <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+        <div class="main" id="main">
+    	<nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-nav-demo" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+                </div>
+                <div class="nav navbar-nav navbar-left">
+                    <a href="#"><img src="https://cdn.worldvectorlogo.com/logos/forex-1.svg" width="82" height="60" title="Forex System" id="home_link"></a>
+                </div>
+                <div class="nav navbar-nav navbar-default">
+                    <p id="home_title">FOREX SYSTEM</p>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-nav-demo">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li id="login"><a href="#" title="login">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container" id="form_container">
+                <form>
+                        <h3>Notes Printing</h3>
+                        <div class="form-group">
+                            <label for="from_value">Value:</label>
+                            <input type="number" id="from_value" placeholder="0" required>
+                        </div>
+                        <div class="form-group"> 
+                            <button type="submit" class="btn btn-primary" id="calc_exrate">Calculate ExRate</button>
+                            <input type="number" id="new_exrate" placeholder="New Exchange Rate">
+                        </div>
+                        <div class="text-center"> 
+                            <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                        </div>
+                </form>
+        </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    </body>
+</html>

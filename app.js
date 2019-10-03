@@ -97,25 +97,68 @@ app.get("/dtt_officer.ejs", function(req,res){
     }); 
 });
 
-// -------------------------------------------------------------------------------------------------------
-
 app.get("/bank_activity.ejs",function(req,res){
-    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+    // res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+    data.getNotifications(String(req.cookies['My details'].usrn),function(results){
+        // console.log(results[0]['Notification']);
+        res.render("bank_activity",{
+            usern : String(req.cookies['My details'].usrn),
+            desgn : String(req.cookies['My details'].designation),
+            dept : String(req.cookies['My details'].dept),
+            notifications : results
+        }); 
+    }); 
 });
 
-app.get("/company_activity.ejs",function(req,res){
-    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );   
+app.get("/biauthority.ejs",function(req,res){
+    // res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+    data.getNotifications(String(req.cookies['My details'].usrn),function(results){
+        // console.log(results[0]['Notification']);
+        res.render("biauthority",{
+            usern : String(req.cookies['My details'].usrn),
+            desgn : String(req.cookies['My details'].designation),
+            dept : String(req.cookies['My details'].dept),
+            notifications : results
+        }); 
+    }); 
+});
+
+app.get("/biauthority_print.ejs",function(req,res){
+    res.render("biauthority_printnotes",{
+        usern : String(req.cookies['My details'].usrn),
+        desgn : String(req.cookies['My details'].designation),
+        dept : String(req.cookies['My details'].dept)
+    });
 });
 
 app.get("/authority.ejs",function(req,res){
-    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+    // res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+    data.getNotifications(String(req.cookies['My details'].usrn),function(results){
+        // console.log(results[0]['Notification']);
+        res.render("authority",{
+            usern : String(req.cookies['My details'].usrn),
+            desgn : String(req.cookies['My details'].designation),
+            dept : String(req.cookies['My details'].dept),
+            notifications : results
+        }); 
+    }); 
 });
+
 app.get("/company_activity.ejs",function(req,res){
-    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+    // res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+    data.getNotifications(String(req.cookies['My details'].usrn),function(results){
+        // console.log(results[0]['Notification']);
+        res.render("company_activity",{
+            usern : String(req.cookies['My details'].usrn),
+            desgn : String(req.cookies['My details'].designation),
+            dept : String(req.cookies['My details'].dept),
+            notifications : results
+        }); 
+    }); 
 });
-app.get("/biauthority.ejs",function(req,res){
-    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
-});
+
+// -------------------------------------------------------------------------------------------------------
+
 app.get("/financialhead_activity.ejs",function(req,res){
     res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
 });
@@ -149,24 +192,25 @@ app.post("/logindet",function(req,res){
             res.cookie('My details',{ usrn : String(usrn) , dept : String(dept) , designation : String(designation)});
             if (String(designation) == "Officer"){
                 switch(String(dept)){
-                    case "BI" : res.redirect("/bi_officer.ejs");break;
-                    case "DTT" :  res.redirect("/dtt_officer.ejs");break;
-                    case "FDI" :  res.redirect("/fdi_officer.ejs");break;
+                    case "BI" : res.redirect("/bi_officer.ejs");break;//----------------------   submits
+                    case "DTT" :  res.redirect("/dtt_officer.ejs");break;//----------------------
+                    case "FDI" :  res.redirect("/fdi_officer.ejs");break;//----------------------
                 }
             } else if(String(designation) == "Chairman") {
                 switch(String(dept)){
-                    case "Bank" : res.redirect("/bank_activity.ejs");break;//------------------
+                    case "Bank" : res.redirect("/bank_activity.ejs");break;//-------------------- activity - submit
                     // case "Company" : res.redirect("/company_activity.ejs");break;
-                    case "FDI" : res.redirect("/authority.ejs");break;
-                    case "DTT" : res.redirect("/authority.ejs");break;
+                    case "FDI" : res.redirect("/authority.ejs");break;//------------------------ activity
+                    case "DTT" : res.redirect("/authority.ejs");break;//------------------------ activity
                 }
 
             } else if(String(designation) == "CEO") {
-                res.redirect("/company_activity.ejs");
+                res.redirect("/company_activity.ejs");//--------------- activity submit
             } else if(String(designation) == "Governor") {
-                res.redirect("/biauthority.ejs");
+                res.redirect("/biauthority.ejs"); //----------------- submit print notes
+
             } else if(String(designation) == "FinancialHead") {
-                res.redirect("/financialhead_activity.ejs");
+                res.redirect("/authority.ejs"); //------------------ submit activity
             }else {
                 res.send("Failure");
             }
@@ -175,12 +219,40 @@ app.post("/logindet",function(req,res){
 });
 
 app.post("/officer_home",function(req,res){
+    if(String(req.cookies['My details'].designation) != "Officer"){
+        if(String(req.cookies['My details'].dept) == "BI"){
+            res.redirect("/biauthority.ejs");
+        } else if (String(req.cookies['My details'].dept) == "DTT"){
+            res.redirect("/authority.ejs");            
+        } else if (String(req.cookies['My details'].dept) == "FDI"){
+            res.redirect("/authority.ejs");
+        } else if (String(req.cookies['My details'].dept) == "Bank"){
+            res.redirect("/bank_activity.ejs");
+        } else if (String(req.cookies['My details'].dept) == "Company"){
+            res.redirect("/company_activity.ejs");
+        } else if (String(req.cookies['My details'].dept) == "CentralFinanceDepartment"){
+            res.redirect("/authority.ejs");
+        }
+    } else {
+        if(String(req.cookies['My details'].dept) == "BI"){
+            res.redirect("/bi_officer.ejs");
+        } else if (String(req.cookies['My details'].dept) == "DTT"){
+            res.redirect("/dtt_officer.ejs");
+        } else if (String(req.cookies['My details'].dept) == "FDI"){
+            res.redirect("/fdi_officer.ejs");
+        } 
+    }
+});
+
+app.post("/authority_home",function(req,res){
     if(String(req.cookies['My details'].dept) == "BI"){
-        res.redirect("/bi_officer.ejs");
+        res.redirect("/biauthority.ejs");
     } else if (String(req.cookies['My details'].dept) == "DTT"){
-        res.redirect("/dtt_officer.ejs");
+        res.redirect("/authority.ejs");
     } else if (String(req.cookies['My details'].dept) == "FDI"){
-        res.redirect("/fdi_officer.ejs");
+        res.redirect("/authority.ejs");
+    } else if (String(req.cookies['My details'].dept) == "CentralFinanceDepartment"){
+        res.redirect("/authority.ejs");
     }
 });
 
@@ -213,10 +285,31 @@ app.post("/officer_submit",function(req,res){
     
 });
 
+app.post("/authority_submit",function(req,res){ 
+    if(String(req.cookies['My details'].dept) == "BI"){
+        res.send("BI OFFICER SUBMIT");
+    } else if(String(req.cookies['My details'].dept) == "DTT"){
+        res.send("DTT OFFICER SUBMIT");
+    } else if(String(req.cookies['My details'].dept) == "FDI"){
+        res.send("FDI OFFICER SUBMIT");
+    } else if(String(req.cookies['My details'].dept) == "Bank"){
+        res.send("Bank Chairman SUBMIT");
+    } else if(String(req.cookies['My details'].dept) == "Company"){
+        res.send("Company CEO SUBMIT");
+    } else if(String(req.cookies['My details'].dept) == "CentralFinanceDepartment"){
+        res.send("Financial Head SUBMIT");
+    }
+    
+});
+
 // ----------------------------------------------------------
 
 app.post("/bi_officer_printnotes",function(req,res){
     res.redirect("/biofficer_print.ejs");
+});
+
+app.post("/bi_authority_printnotes",function(req,res){
+    res.redirect("/biauthority_print.ejs");
 });
 
 app.post("/print_notes",function(req,res){
@@ -245,6 +338,15 @@ app.post("/print_notes",function(req,res){
             });
         });
     });
+});
+
+app.post("/bank_home",function(req,res){
+    res.redirect("/bank_activity.ejs");
+});
+
+app.post("/bank_activity_p",function(req,res){
+    //-----------------------------------------------------------
+    res.send("Bank Activity");
 });
 
 app.listen(3000, function(){

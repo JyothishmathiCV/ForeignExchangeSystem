@@ -1,37 +1,32 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Authority</title>
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="officer.css" >
-        <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
-    </head>
-    <body>
+<% include partials/officer_header %>
         <div id="mySidenav" class="sidenav">
-            <div class="container">
-                <form action="">
-                        <button type="submit" class="btn btn-primary">Home</button>
+            <div class="container" id="form_container1">
+                <form action="/officer_home" method="POST">
+                    <button type="submit" class="btn btn-primary">Home</button>
+                    <!-- <a href="#" id="notifications">Home</a> -->
                 </form>
             </div>
-            <div class="container">
-                    <form action="">
-                            <button type="submit" class="btn btn-primary">Activity</button>
-                    </form>
+            <div class="container" id="form_container2">
+                <form action="/authority_submit" method="POST">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <!-- <a href="#" id="notifications">Home</a> -->
+                </form>
             </div>
-            <div class="container">
-                        <form action="">
-                                <button type="submit" class="btn btn-primary">Conversion</button>
-                        </form>
+            <div class="container" id="form_container4">
+                <form action="/gen_conversion" method="POST">
+                    <button type="submit" class="btn btn-primary">Conversion</button>
+                    <!-- <a href="#" id="notifications">Home</a> -->
+                </form>
             </div>
             <form>
                 
                 <div class="form-group"> 
                     <label for="username">Username:</label>
-                    <input type="number" id="username" placeholder="Username">
+                    <input type="number" id="username" placeholder="<%= usern %>">
                     <label for="username">Designation:</label>
-                    <input type="number" id="designation" placeholder="Designation">
+                    <input type="number" id="designation" placeholder="<%= desgn %>">
                     <label for="username">Department:</label>
-                    <input type="number" id="department" placeholder="Department">
+                    <input type="number" id="department" placeholder="<%= dept %>">
                 </div>
             </form>
         </div>
@@ -57,10 +52,9 @@
                 <div class="nav navbar-nav navbar-default">
                     <p id="home_title">FOREX SYSTEM</p>
                 </div>
-                
                 <div class="collapse navbar-collapse" id="bs-nav-demo">
                         <ul class="nav navbar-nav navbar-right">
-                            <li id="login"><a href="#" title="login">Logout</a></li>
+                            <li id="login"><a href="/login.ejs" title="login">Logout</a></li>
                         </ul>
                 </div>
             </div>
@@ -69,12 +63,12 @@
         <!--TABLE FOR NOTIFICATIONS AND ANNOUNCEMENTS-->
         <table>
             <tbody>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
+                <% for(var i=0; i < notifications.length ; i++) { %>
+                    <tr>
+                        <td> <%= notifications[i]['Notification'] %> </td>
+                        <td> <%= notifications[i]['Timestamp'] %> </td>
+                    </tr>
+                <% } %>
             </tbody>
         </table>
-        <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    </body>
-</html>
+<% include partials/footer %>        

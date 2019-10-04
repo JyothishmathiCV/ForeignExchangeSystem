@@ -38,6 +38,7 @@ var BISchema = new mongoose.Schema({
     Timestamp : Date,
     SubmittedBy : String,
     CurrencyName : String,
+    CurrencyType : String,
     ValueEq : Number
 });
 
@@ -46,6 +47,7 @@ var FDISchema = new mongoose.Schema({
     Timestamp : Date,
     SubmittedBy : String,
     CurrencyName : String,
+    CurrencyType : String,
     ValueEq : Number
 });
 
@@ -129,12 +131,13 @@ var convertUser = function (from,to,callback){
    });
 }
 
-var submit = function (SubmittedBy,CurrencyName,ValueEq,Department,callback){
+var submit = function (SubmittedBy,CurrencyName,ValueEq,CurrencyType,Department,callback){
     if (Department == "BI"){
         BI.create({
             Timestamp : new Date(),
             SubmittedBy : SubmittedBy,
             CurrencyName : CurrencyName,
+            CurrencyType : CurrencyType,
             ValueEq : ValueEq
         }, function(err, curr){
             if(err){
@@ -146,11 +149,12 @@ var submit = function (SubmittedBy,CurrencyName,ValueEq,Department,callback){
             }
         });
     } else if (Department == "FDI"){
-        
+        console.log("Yeah");
         FDI.create({
             Timestamp : new Date(),
             SubmittedBy : SubmittedBy,
             CurrencyName : CurrencyName,
+            CurrencyType : CurrencyType,
             ValueEq : ValueEq
         }, function(err, curr){
             if(err){
@@ -165,7 +169,22 @@ var submit = function (SubmittedBy,CurrencyName,ValueEq,Department,callback){
         DTT.create({
             Timestamp : new Date(),
             CurrencyName : CurrencyName,
+            CurrencyType : "Tax",
             ValueEq : ValueEq
+        }, function(err, curr){
+            if(err){
+                console.log(err);
+            } else {
+                console.log(curr);
+                callback(true);
+            }
+        });
+    } else if (Department == "CentralFinanceDepartment"){
+        //
+        TxnInventory.create({
+            Timestamp : new Date(),
+            CurrencyName : CurrencyName,
+            TotalValueEq : ValueEq
         }, function(err, curr){
             if(err){
                 console.log(err);
@@ -212,6 +231,146 @@ var notify = function (message,submittedTo,callback){
     });
 }
 
+var gethistory = function(usrn,dept,callback){
+    if(String(dept) == "BI"){
+        BI.find({SubmittedBy : String(usrn)},function(err,results){
+            if(err){
+                console.log(err);
+            } else {
+                console.log(results);
+                callback(results);
+            }
+        });
+    } else if(String(dept) == "FDI"){
+        FDI.find({SubmittedBy : String(usrn)},function(err,results){
+            if(err){
+                console.log(err);
+            } else {
+                // console.log(results);
+                callback(results);
+            }
+        });
+    } else if(String(dept) == "DTT"){
+        DTT.find({SubmittedBy : String(usrn)},function(err,results){
+            if(err){
+                console.log(err);
+            } else {
+                // console.log(results);
+                callback(results);
+            }
+        });
+    } else if(String(dept) == "Bank"){
+        BI.find({SubmittedBy : String(usrn)},function(err,results){
+            if(err){
+                console.log(err);
+            } else {
+                // console.log(results);
+                callback(results);
+            }
+        });
+    } else if(String(dept) == "Company"){
+        FDI.find({SubmittedBy : String(usrn)},function(err,results){
+            if(err){
+                console.log(err);
+            } else {
+                // console.log(results);
+                callback(results);
+            }
+        });
+    }
+    
+}
+
+var getName = function(dept,Designation,Country,callback){
+    loginDetails.find({
+        Designation : String(Designation), 
+        Country : String(Country), 
+        Department : String(dept)
+    }, function(err,details){
+        if(err){
+            console.log(err);
+        } else {
+            // console.log(details.length);
+            if(details.length == 0){
+                callback(false);
+            } else {
+                callback(details[0].Username);
+            }
+        }
+    });
+} 
+// FromCurrency : String,
+//     ToCurrency : String,
+//     Timestamp : Date,
+// //     ExRate : Number
+// Timestamp : new Date(),
+//             CurrencyName : CurrencyName,
+//             TotalValueEq : ValueEq
+
+var calculateExRate = function (callback){
+    exchangeRates.find({},function(err,resp){
+        if(err){
+            console.log(err);
+        } else {
+            for(var i=0; i<resp.length; i++){
+                var fromCurrency = resp[i].FromCurrency;
+                var toCurrency = resp[i].ToCurrency;
+                TxnInventory.find({CurrencyName : String(fromCurrency)},function(err,resp2){
+                    if(err){
+                        console.log(err);
+                    } else {
+                        var fromTot = resp2[0]["TotalValueEq"];
+                        TxnInventory.find({CurrencyName : String(toCurrency)},function(err,resp3){
+                            if(err){
+                                console.log(err);
+                            } else {
+                                var toTot = resp3[0]["TotalValueEq"];
+                                var newExRate = toTot/fromTot;
+                                exchangeRates.update({
+                                    FromCurrency : String(fromCurrency), 
+                                    ToCurrency : String(toCurrency)},
+                                    {$set: {ExRate : Number(newExRate)
+                                    }}, function(err,resp4){
+                                        if(err){
+                                            console.log(err);
+                                        } else {
+                                            callback(true);
+                                        }
+
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    });
+}
+
+var notifyAll = function(message, callback){
+    loginDetails.find({},function(err,resp){
+        if(err){
+            console.log(err);
+        } else {
+            for(var i =0; i<resp.length; i++){
+                var submittedTo = resp[i].Username;
+                notifications.create({
+                    Username : submittedTo,
+                    Timestamp : new Date(),
+                    Notification : message
+                },function(err,res){
+                    if(err){
+                        console.log(err);
+                    } else {
+                        console.log(res);
+                    }
+                });
+            }
+            callback(true);
+        }
+    });
+    
+}
 
 // convert("Dollar", "Rupees", 10, function (val){
 //     console.log(val);
@@ -226,5 +385,9 @@ module.exports = {
     submit : submit,
     getCountry : getCountry,
     getCurrencyName : getCurrencyName,
-    notify : notify
+    notify : notify,
+    gethistory : gethistory,
+    getName : getName,
+    calculateExRate : calculateExRate,
+    notifyAll : notifyAll
 }

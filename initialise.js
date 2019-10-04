@@ -38,6 +38,7 @@ var BISchema = new mongoose.Schema({
     Timestamp : Date,
     SubmittedBy : String,
     CurrencyName : String,
+    CurrencyType :String,
     ValueEq : Number
 });
 
@@ -479,8 +480,22 @@ var notifications = mongoose.model("notifications",notificationsShema);
 //     }
 // });
 
-notifications.create({
-    Username : "Ram",
+// notifications.create({
+//     Username : "Ram",
+//     Timestamp : new Date(),
+//     Notification : "Bank CEO submitted data"
+// });
+
+BI.create({
     Timestamp : new Date(),
-    Notification : "Bank CEO submitted data"
+    SubmittedBy : "Krishna",
+    CurrencyName : "Rupees",
+    CurrencyType : "Liquid Cash",
+    ValueEq : 10
+}, function(err, curr){
+    if(err){
+        console.log(err);
+    } else {
+        console.log(curr);
+    }
 });

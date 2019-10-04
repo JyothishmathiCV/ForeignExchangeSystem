@@ -157,13 +157,131 @@ app.get("/company_activity.ejs",function(req,res){
     }); 
 });
 
-// -------------------------------------------------------------------------------------------------------
-
-app.get("/financialhead_activity.ejs",function(req,res){
-    res.send(String(req.cookies['My details'].dept) +  String(req.cookies['My details'].designation) );
+app.get("/bi_submit.ejs",function(req,res){
+    if(String(req.cookies['My details'].designation) == "Officer"){
+        data.getCountry(String(req.cookies['My details'].usrn),function(country){
+            console.log(country);
+            data.getName("Bank","Chairman",country,function(name){
+                console.log(name);
+                data.gethistory(name,"Bank",function(results){
+                    // console.log(results);
+                    res.render("bi_submit",{
+                        usern : String(req.cookies['My details'].usrn),
+                        desgn : String(req.cookies['My details'].designation),
+                        dept : String(req.cookies['My details'].dept),
+                        history : results
+                    });
+                });
+            });
+        });
+    } else {
+        data.getCountry(String(req.cookies['My details'].usrn),function(country){
+            console.log(country);
+            data.getName("BI","Officer",country,function(name){
+                console.log(name);
+                data.gethistory(name,"BI",function(results){
+                    // console.log(results);
+                    res.render("bi_submit",{
+                        usern : String(req.cookies['My details'].usrn),
+                        desgn : String(req.cookies['My details'].designation),
+                        dept : String(req.cookies['My details'].dept),
+                        history : results
+                    });
+                });
+            });
+        });
+    }
+    
+    
 });
-// -----------------------------------------------------------------------------------------------------------
 
+app.get("/fdi_submit.ejs",function(req,res){
+    data.getCountry(String(req.cookies['My details'].usrn),function(country){
+        console.log(country);
+        data.getName("Company","CEO",country,function(name){
+            console.log(name);
+            data.gethistory(name,"Company",function(results){
+                // console.log(results);
+                res.render("fdi_submit",{
+                    usern : String(req.cookies['My details'].usrn),
+                    desgn : String(req.cookies['My details'].designation),
+                    dept : String(req.cookies['My details'].dept),
+                    history : results
+                });
+            });
+        });
+    });
+    
+});
+
+app.get("/authority_activity.ejs",function(req,res){ 
+    if(String(req.cookies['My details'].dept) == "FDI"){
+        data.getCountry(String(req.cookies['My details'].usrn),function(country){
+            console.log(country);
+            data.getName("FDI","Officer",country,function(name){
+                console.log(name);
+                data.gethistory(name,"FDI",function(results){
+                    // console.log(results);
+                    res.render("authority_activity",{
+                        usern : String(req.cookies['My details'].usrn),
+                        desgn : String(req.cookies['My details'].designation),
+                        dept : String(req.cookies['My details'].dept),
+                        history : results
+                    });
+                });
+            });
+        });
+    } else if (String(req.cookies['My details'].dept) == "DTT"){
+        data.getCountry(String(req.cookies['My details'].usrn),function(country){
+            console.log(country);
+            data.getName("DTT","Officer",country,function(name){
+                console.log(name);
+                data.gethistory(name,"DTT",function(results){
+                    // console.log(results);
+                    res.render("authority_activity",{
+                        usern : String(req.cookies['My details'].usrn),
+                        desgn : String(req.cookies['My details'].designation),
+                        dept : String(req.cookies['My details'].dept),
+                        history : results
+                    });
+                });
+            });
+        });
+    } else if (String(req.cookies['My details'].dept) == "CentralFinanceDepartment"){
+        var all_results = []
+        data.getCountry(String(req.cookies['My details'].usrn),function(country){
+            console.log(country);
+            data.getName("DTT","Chairman",country,function(name){
+                console.log(name);
+                data.gethistory(name,"DTT",function(dtt_results){
+                    all_results=all_results.concat(dtt_results);
+                    data.getName("FDI","Officer",country,function(name){
+                        console.log(name);
+                        data.gethistory(name,"FDI",function(fdi_results){
+                            all_results=all_results.concat(fdi_results);
+                            data.getName("BI","Officer",country,function(name){
+                                console.log(name);
+                                data.gethistory(name,"BI",function(bi_results){
+                                    all_results=all_results.concat(bi_results);
+                                        console.log(all_results);
+                                        res.render("authority_activity",{
+                                        usern : String(req.cookies['My details'].usrn),
+                                        desgn : String(req.cookies['My details'].designation),
+                                        dept : String(req.cookies['My details'].dept),
+                                        history : all_results
+                                    });
+                                    
+                                });
+                            });
+                        });
+                    });
+                    
+                });
+            });
+        });
+    }
+    
+});
 
 app.post("/convert", function(req,res){
     var fromcurr = req.body.from;
@@ -192,22 +310,22 @@ app.post("/logindet",function(req,res){
             res.cookie('My details',{ usrn : String(usrn) , dept : String(dept) , designation : String(designation)});
             if (String(designation) == "Officer"){
                 switch(String(dept)){
-                    case "BI" : res.redirect("/bi_officer.ejs");break;//----------------------   submits
-                    case "DTT" :  res.redirect("/dtt_officer.ejs");break;//----------------------
-                    case "FDI" :  res.redirect("/fdi_officer.ejs");break;//----------------------
+                    case "BI" : res.redirect("/bi_officer.ejs");break;
+                    case "DTT" :  res.redirect("/dtt_officer.ejs");break;
+                    case "FDI" :  res.redirect("/fdi_officer.ejs");break;
                 }
             } else if(String(designation) == "Chairman") {
                 switch(String(dept)){
                     case "Bank" : res.redirect("/bank_activity.ejs");break;//-------------------- activity - submit
                     // case "Company" : res.redirect("/company_activity.ejs");break;
-                    case "FDI" : res.redirect("/authority.ejs");break;//------------------------ activity
-                    case "DTT" : res.redirect("/authority.ejs");break;//------------------------ activity
+                    case "FDI" : res.redirect("/authority.ejs");break;
+                    case "DTT" : res.redirect("/authority.ejs");break;
                 }
 
             } else if(String(designation) == "CEO") {
                 res.redirect("/company_activity.ejs");//--------------- activity submit
             } else if(String(designation) == "Governor") {
-                res.redirect("/biauthority.ejs"); //----------------- submit print notes
+                res.redirect("/biauthority.ejs"); 
 
             } else if(String(designation) == "FinancialHead") {
                 res.redirect("/authority.ejs"); //------------------ submit activity
@@ -276,28 +394,28 @@ app.post("/convertUser", function(req,res){
 // ---------------------------------------------------------
 app.post("/officer_submit",function(req,res){ 
     if(String(req.cookies['My details'].dept) == "BI"){
-        res.send("BI OFFICER SUBMIT");
+        res.redirect("/bi_submit.ejs");
+    } else if(String(req.cookies['My details'].dept) == "FDI"){
+        res.redirect("/fdi_submit.ejs");
     } else if(String(req.cookies['My details'].dept) == "DTT"){
         res.send("DTT OFFICER SUBMIT");
-    } else if(String(req.cookies['My details'].dept) == "FDI"){
-        res.send("FDI OFFICER SUBMIT");
     }
     
 });
 
 app.post("/authority_submit",function(req,res){ 
     if(String(req.cookies['My details'].dept) == "BI"){
-        res.send("BI OFFICER SUBMIT");
+        res.redirect("/bi_submit.ejs");
     } else if(String(req.cookies['My details'].dept) == "DTT"){
-        res.send("DTT OFFICER SUBMIT");
+        res.redirect("/authority_activity.ejs");
     } else if(String(req.cookies['My details'].dept) == "FDI"){
-        res.send("FDI OFFICER SUBMIT");
+        res.redirect("/authority_activity.ejs");
     } else if(String(req.cookies['My details'].dept) == "Bank"){
         res.send("Bank Chairman SUBMIT");
     } else if(String(req.cookies['My details'].dept) == "Company"){
         res.send("Company CEO SUBMIT");
     } else if(String(req.cookies['My details'].dept) == "CentralFinanceDepartment"){
-        res.send("Financial Head SUBMIT");
+        res.redirect("/authority_activity.ejs");
     }
     
 });
@@ -312,6 +430,25 @@ app.post("/bi_authority_printnotes",function(req,res){
     res.redirect("/biauthority_print.ejs");
 });
 
+app.post("/print_notes_authority",function(req,res){
+    var value = req.body.from_value;
+    var SubmittedBy = String(req.cookies['My details'].usrn);
+    data.getCountry(SubmittedBy,function(results){
+        console.log("Country " + String(results));
+        var submittedTo = "";
+        if(String(results) == "India"){
+            submittedTo = "Ram";
+        } else {
+            submittedTo = "Sam";
+        }
+        data.notify("Print notes value " + String(value),submittedTo, function(resp){
+        console.log("Submitted!!!!");
+        console.log(resp);
+        res.redirect("/biauthority_printnotes.ejs");
+        });
+    });
+});
+
 app.post("/print_notes",function(req,res){
     var ValueEq = Number(req.body.from_value);
     var SubmittedBy = String(req.cookies['My details'].usrn);
@@ -319,7 +456,7 @@ app.post("/print_notes",function(req,res){
         console.log("Country " + String(results));
         data.getCurrencyName(results,function(rest){
             console.log("CurrencyName " + String(rest));
-            data.submit(SubmittedBy, rest, ValueEq, "BI", function(reslts){
+            data.submit(SubmittedBy, rest, ValueEq,"Liquid Cash", "BI", function(reslts){
                 if(reslts == true){
                     var submittedTo = "";
                     if(String(results) == "India"){
@@ -337,6 +474,174 @@ app.post("/print_notes",function(req,res){
                 }
             });
         });
+    });
+});
+
+app.post("/valeq_submit",function(req,res){
+    if(String(req.cookies['My details'].designation) == "Officer" && String(req.cookies['My details'].dept) == "BI"){
+        var ValueEq = Number(req.body.new_valeq);
+        var CurrencyType = String(req.body.from);
+        var SubmittedBy = String(req.cookies['My details'].usrn);
+        data.getCountry(SubmittedBy,function(results){
+            console.log("Country " + String(results));
+            data.getCurrencyName(results,function(rest){
+                console.log("CurrencyName " + String(rest));
+                data.submit(SubmittedBy, rest, ValueEq,CurrencyType, "BI", function(reslts){
+                    if(reslts == true){
+                        var submittedTo = "";
+                        if(String(results) == "India"){
+                            submittedTo = "Rakhi";
+                        } else {
+                            submittedTo = "Riya";
+                        }
+                        data.notify("New Value Eq Submitted",submittedTo, function(resp){
+                            console.log("Submitted!!!!");
+                            console.log(resp);
+                            res.redirect("/bi_submit.ejs");
+                        });
+                    } else {
+                        res.send("Invalid");
+                    }
+                });
+            });
+        });
+    } else if (String(req.cookies['My details'].designation) == "Officer" && String(req.cookies['My details'].dept) == "FDI"){
+        var ValueEq = Number(req.body.new_valeq);
+        console.log("Yippeee");
+        var CurrencyType = String(req.body.from);
+        var SubmittedBy = String(req.cookies['My details'].usrn);
+        data.getCountry(SubmittedBy,function(results){
+            console.log("Country " + String(results));
+            data.getCurrencyName(results,function(rest){
+                console.log("CurrencyName " + String(rest));
+                data.submit(SubmittedBy, rest, ValueEq,CurrencyType, "FDI", function(reslts){
+                    if(reslts == true){
+                        var submittedTo = "";
+                        if(String(results) == "India"){
+                            submittedTo = "Rohan";
+                        } else {
+                            submittedTo = "Ron";
+                        }
+                        data.notify("New Value Eq Submitted",submittedTo, function(resp){
+                            console.log("Submitted!!!!");
+                            console.log(resp);
+                            res.redirect("/fdi_submit.ejs");
+                        });
+                    } else {
+                        res.send("Invalid");
+                    }
+                });
+            });
+        });
+    } else if(String(req.cookies['My details'].designation) == "Governor" && String(req.cookies['My details'].dept) == "BI"){
+        var ValueEq = Number(req.body.new_valeq);
+        var CurrencyType = String(req.body.from);
+        var SubmittedBy = String(req.cookies['My details'].usrn);
+        data.getCountry(SubmittedBy,function(results){
+            console.log("Country " + String(results));
+            data.getCurrencyName(results,function(rest){
+                console.log("CurrencyName " + String(rest));
+                var submittedTo = "";
+                        if(String(results) == "India"){
+                            submittedTo = "Ramesh";
+                        } else {
+                            submittedTo = "Robin";
+                        }
+                        data.notify("New Value Eq Submitted BI",submittedTo, function(resp){
+                            console.log("Submitted!!!!");
+                            console.log(resp);
+                            res.redirect("/bi_submit.ejs");
+                        });
+            });
+        });
+    } else if(String(req.cookies['My details'].designation) == "Chairman" && String(req.cookies['My details'].dept) == "FDI"){
+        var ValueEq = Number(req.body.new_valeq);
+        var CurrencyType = String(req.body.from);
+        var SubmittedBy = String(req.cookies['My details'].usrn);
+        data.getCountry(SubmittedBy,function(results){
+            console.log("Country " + String(results));
+            data.getCurrencyName(results,function(rest){
+                console.log("CurrencyName " + String(rest));
+                var submittedTo = "";
+                        if(String(results) == "India"){
+                            submittedTo = "Ramesh";
+                        } else {
+                            submittedTo = "Robin";
+                        }
+                        data.notify("New Value Eq Submitted FDI",submittedTo, function(resp){
+                            console.log("Submitted!!!!");
+                            console.log(resp);
+                            res.redirect("/authority_activity.ejs");
+                        });
+            });
+        });
+    } else if(String(req.cookies['My details'].designation) == "Chairman" && String(req.cookies['My details'].dept) == "DTT"){
+        // console.log("Heyy");
+        var ValueEq = Number(req.body.from_value);
+        var CurrencyType = "Tax";
+        var SubmittedBy = String(req.cookies['My details'].usrn);
+        data.getCountry(SubmittedBy,function(results){
+            console.log("Country " + String(results));
+            data.getCurrencyName(results,function(rest){
+                console.log("CurrencyName " + String(rest));
+                data.submit(SubmittedBy, rest, ValueEq,CurrencyType, "DTT", function(reslts){
+                    if(reslts == true){
+                        var submittedTo = "";
+                        if(String(results) == "India"){
+                            submittedTo = "Ramesh";
+                        } else {
+                            submittedTo = "Robin";
+                        }
+                        data.notify("New Value Eq Submitted DTT",submittedTo, function(resp){
+                            console.log("Submitted!!!!");
+                            console.log(resp);
+                            res.redirect("/authority_activity.ejs");
+                        });
+                    } else {
+                        res.send("Invalid");
+                    }
+                });
+            });
+        });
+    }
+    
+});
+
+app.post("/calc_ex_rate",function(req,res){
+    var TotalValueEq = Number(req.body.TotalValueEq);
+    var CurrencyType = "";
+    var SubmittedBy = String(req.cookies['My details'].usrn);
+    data.getCountry(SubmittedBy,function(results){
+        console.log("Country " + String(results));
+        data.getCurrencyName(results,function(rest){
+            console.log("CurrencyName " + String(rest));
+            data.submit(SubmittedBy, rest, TotalValueEq,CurrencyType, "CentralFinanceDepartment", function(reslts){
+                if(reslts == true){
+                    var submittedTo = "";
+                    if(String(results) == "India"){
+                        submittedTo = "Ramesh";
+                    } else {
+                        submittedTo = "Robin";
+                    }
+                    data.notify("New Value Eq Submitted TXNInventory",submittedTo, function(resp){
+                    console.log("Submitted!!!!");
+                    console.log(resp);
+
+                    // res.redirect("/authority_activity.ejs");
+                    });
+                } else {
+                    res.send("Invalid");
+                }
+                });
+            });
+        });
+});
+
+app.post("/broadcast",function(req,res){
+    data.notifyAll("New exchange rate calculated!", function(resp){
+        console.log("Yipee!!!!");
+        console.log(resp);
+        res.redirect("/authority_activity.ejs");
     });
 });
 

@@ -1,0 +1,122 @@
+<% include partials/authority_activity_header %>
+
+        <div id="mySidenav" class="sidenav">
+                <div class="container" id="form_container1">
+                        <form action="/authority_home" method="POST">
+                            <button type="submit" class="btn btn-primary">Home</button>
+                            <!-- <a href="#" id="notifications">Home</a> -->
+                        </form>
+                    </div>
+                    <div class="container" id="form_container2">
+                        <form action="/authority_submit" method="POST">
+                            <button type="submit" class="btn btn-primary">Activity</button>
+                            <!-- <a href="#" id="notifications">Home</a> -->
+                        </form>
+                    </div>
+                    <div class="container" id="form_container4">
+                        <form action="/gen_conversion" method="POST">
+                            <button type="submit" class="btn btn-primary">Conversion</button>
+                            <!-- <a href="#" id="notifications">Home</a> -->
+                        </form>
+                    </div>
+            <form>
+                
+                <div class="form-group"> 
+                        <label for="username">Username:</label>
+                        <input type="number" id="username" placeholder="<%= usern %>">
+                        <label for="username">Designation:</label>
+                        <input type="number" id="designation" placeholder="<%= desgn %>">
+                        <label for="username">Department:</label>
+                        <input type="number" id="department" placeholder="<%= dept %>">
+                </div>
+            </form>
+        </div>
+                  
+        <!-- Use any element to open the sidenav -->
+        <span onclick="openNav()">open</span>
+                  
+        <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+        <div class="main" id="main">
+    	<nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-nav-demo" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+                </div>
+                <div class="nav navbar-nav navbar-left">
+                    <a href="#"><img src="https://cdn.worldvectorlogo.com/logos/forex-1.svg" width="82" height="60" title="Forex System" id="home_link"></a>
+                </div>
+                <div class="nav navbar-nav navbar-default">
+                    <p id="home_title">FOREX SYSTEM</p>
+                </div>
+                
+                <div class="collapse navbar-collapse" id="bs-nav-demo">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li id="login"><a href="/login.ejs" title="login">Logout</a></li>
+                        </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container" id="form_container">
+            <form action="/valeq_submit" method="POST">
+                    <h3>Activity</h3>
+                    <div name="fromtype" class="form-group"> 
+                        <% if(String(dept) == "FDI"){ %>
+                            <label for="from">From:</label>
+                            <select name="from" id="from">
+                                    <option value="" disabled selected>Choose Currency Type</option>
+                                    <option>Shares</option>
+                                    <option>Property</option>
+                                    <option>Stocks</option>
+                                    <option>Investments</option>
+                            </select>
+                            <% } %>
+                        <input name="from_value" type="number" id="from_value" placeholder="Value Equivalent">
+                    </div>
+                    <div class="text-center"> 
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+            </form>
+        <!--HISTORY OF SUBMISSIONS-->
+            <table>
+            <tbody>
+                <tr>
+                    <td>Officer</td>
+                    <td>Date</td>
+                    <td>Value Eq</td>
+                    <td>Type</td>
+                </tr>
+                <tr>
+                        <% for(var i=0; i < history.length ; i++) { %>
+                            <tr>
+                                <td> <%= history[i]['SubmittedBy'] %> </td>
+                                <td> <%= history[i]['ValueEq'] %> </td>
+                                <td> <%= history[i]['Timestamp'] %> </td>
+                                <td> <%= history[i]['CurrencyType'] %> </td>
+                            </tr>
+                        <% } %>
+                </tr>
+            </tbody>
+            </table>
+            <% if(String(dept) == "CentralFinanceDepartment"){%>
+            <form action="/calc_ex_rate" method="POST">
+                    
+                    <div class="form-group text-center">
+                        <input name="TotalValueEq" id="TotalValueEq" type="number" placeholder="TotalValueEq" width="100px">
+                    </div>
+                    <div class="text-center"> 
+                            <button type="submit" class="btn btn-primary" id="calcnewexrate">Calculate New Exchange Rate</button>
+                    </div>
+            </form>
+            <form action="/broadcast" method="POST">
+                    <div class="text-center"> 
+                        <button type="submit" class="btn btn-primary">Broadcast</button>
+                    </div>
+            </form>
+            <% } %>
+        </div>
+<% include partials/footer %>        

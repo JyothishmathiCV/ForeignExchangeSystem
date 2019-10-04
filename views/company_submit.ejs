@@ -1,37 +1,33 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Company Submit</title>
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="banksubmit.css" >
-        <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
-    </head>
-    <body>
+<% include partials/bank_header %>
+
         <div id="mySidenav" class="sidenav">
-            <div class="container">
-                <form action="">
-                        <button type="submit" class="btn btn-primary">Home</button>
-                </form>
-            </div>
-            <div class="container">
-                    <form action="">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-            </div>
-            <div class="container">
-                        <form action="">
-                                <button type="submit" class="btn btn-primary">Conversion</button>
+                <div class="container" id="form_container1">
+                        <form action="/bank_home" method="POST">
+                            <button type="submit" class="btn btn-primary">Home</button>
+                            <!-- <a href="#" id="notifications">Home</a> -->
                         </form>
-            </div>
+                    </div>
+                    <div class="container" id="form_container3">
+                        <form action="/authority_submit" method="POST">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <!-- <a href="#" id="notifications">Home</a> -->
+                        </form>
+                    </div>
+                    <div class="container" id="form_container4">
+                        <form action="/gen_conversion" method="POST">
+                            <button type="submit" class="btn btn-primary">Conversion</button>
+                            <!-- <a href="#" id="notifications">Home</a> -->
+                        </form>
+                    </div>
                     <form>
                 
                         <div class="form-group"> 
                             <label for="username">Username:</label>
-                            <input type="number" id="username" placeholder="Username">
+                            <input type="number" id="username" placeholder="<%= usern %>">
                             <label for="username">Designation:</label>
-                            <input type="number" id="designation" placeholder="Designation">
+                            <input type="number" id="designation" placeholder="<%= desgn %>">
                             <label for="username">Department:</label>
-                            <input type="number" id="department" placeholder="Department">
+                            <input type="number" id="department" placeholder="<%= dept %>">
                         </div>
                     </form>
         </div>
@@ -59,21 +55,21 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-nav-demo">
                         <ul class="nav navbar-nav navbar-right">
-                            <li id="login"><a href="#" title="login">Logout</a></li>
+                            <li id="login"><a href="/login.ejs" title="login">Logout</a></li>
                         </ul>
                 </div>
             </div>
         </nav>
         <div class="container" id="form_container">
-                <form>
+                <form action="/valeq_submit" method="POST">
                         <h3>Submission Page</h3>
-                        <div class="form-group">
+                        <div  class="form-group">
                           <label for="from_value">Total Value:</label>
-                          <input type="number" id="from_value" placeholder="0" required>
+                          <input name="from_value" type="number" id="from_value" placeholder="0" required>
                         </div>
-                        <div class="form-group">
+                        <div name="currtype"class="form-group">
                                 <label for="type">Type of Currency:</label>
-                                <select id="type">
+                                <select name="type" id="type">
                                       <option value="" disabled selected>Submission value type</option>
                                       <option>Shares</option>
                                       <option>Property</option>
@@ -87,7 +83,4 @@
                 </form>
         </div>
         </div>
-        <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    </body>
-</html>
+<% include partials/footer %>                

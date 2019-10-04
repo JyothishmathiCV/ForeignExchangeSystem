@@ -181,9 +181,46 @@ var submit = function (SubmittedBy,CurrencyName,ValueEq,CurrencyType,Department,
         });
     } else if (Department == "CentralFinanceDepartment"){
         //
-        TxnInventory.create({
-            Timestamp : new Date(),
+        TxnInventory.update({
+            // Timestamp : new Date(),
             CurrencyName : CurrencyName,
+            // TotalValueEq : ValueEq
+        },{
+            $set : {
+                Timestamp : new Date(),
+                TotalValueEq : ValueEq
+            }
+        } ,function(err, curr){
+            if(err){
+                console.log(err);
+            } else {
+                console.log(curr);
+                callback(true);
+            }
+        });
+    } else if (Department == "Bank"){
+        //
+        BI.create({
+            Timestamp : new Date(),
+            SubmittedBy : SubmittedBy,
+            CurrencyName : CurrencyName,
+            CurrencyType : CurrencyType,
+            TotalValueEq : ValueEq
+        }, function(err, curr){
+            if(err){
+                console.log(err);
+            } else {
+                console.log(curr);
+                callback(true);
+            }
+        });
+    } else if (Department == "Company"){
+        //
+        FDI.create({
+            Timestamp : new Date(),
+            SubmittedBy : SubmittedBy,
+            CurrencyName : CurrencyName,
+            CurrencyType : CurrencyType,
             TotalValueEq : ValueEq
         }, function(err, curr){
             if(err){

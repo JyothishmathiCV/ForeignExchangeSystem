@@ -214,6 +214,24 @@ app.get("/fdi_submit.ejs",function(req,res){
     
 });
 
+app.get("/bank_submit.ejs",function(req,res){
+    res.render("bank_submit",{
+        usern : String(req.cookies['My details'].usrn),
+        desgn : String(req.cookies['My details'].designation),
+        dept : String(req.cookies['My details'].dept)
+        // history : results
+    });            
+});
+
+app.get("/company_submit.ejs",function(req,res){
+    res.render("company_submit",{
+        usern : String(req.cookies['My details'].usrn),
+        desgn : String(req.cookies['My details'].designation),
+        dept : String(req.cookies['My details'].dept)
+        // history : results
+    });            
+});
+
 app.get("/authority_activity.ejs",function(req,res){ 
     if(String(req.cookies['My details'].dept) == "FDI"){
         data.getCountry(String(req.cookies['My details'].usrn),function(country){
@@ -411,9 +429,9 @@ app.post("/authority_submit",function(req,res){
     } else if(String(req.cookies['My details'].dept) == "FDI"){
         res.redirect("/authority_activity.ejs");
     } else if(String(req.cookies['My details'].dept) == "Bank"){
-        res.send("Bank Chairman SUBMIT");
+        res.redirect("/bank_submit.ejs");
     } else if(String(req.cookies['My details'].dept) == "Company"){
-        res.send("Company CEO SUBMIT");
+        res.redirect("/company_submit.ejs");
     } else if(String(req.cookies['My details'].dept) == "CentralFinanceDepartment"){
         res.redirect("/authority_activity.ejs");
     }
@@ -603,6 +621,62 @@ app.post("/valeq_submit",function(req,res){
                 });
             });
         });
+    } else if(String(req.cookies['My details'].designation) == "Chairman" && String(req.cookies['My details'].dept) == "Bank"){
+        //
+        var ValueEq = Number(req.body.from_value);
+        var CurrencyType = String(req.body.type);
+        var SubmittedBy = String(req.cookies['My details'].usrn);
+        data.getCountry(SubmittedBy,function(results){
+            console.log("Country " + String(results));
+            data.getCurrencyName(results,function(rest){
+                console.log("CurrencyName " + String(rest));
+                data.submit(SubmittedBy, rest, ValueEq,CurrencyType, "Bank", function(reslts){
+                    if(reslts == true){
+                        var submittedTo = "";
+                        if(String(results) == "India"){
+                            submittedTo = "Ram";
+                        } else {
+                            submittedTo = "Sam";
+                        }
+                        data.notify("New Value Eq Submitted Bank",submittedTo, function(resp){
+                            console.log("Submitted!!!!");
+                            console.log(resp);
+                            res.redirect("/bank_submit.ejs");
+                        });
+                    } else {
+                        res.send("Invalid");
+                    }
+                });
+            });
+        });
+    } else if(String(req.cookies['My details'].designation) == "CEO" && String(req.cookies['My details'].dept) == "Company"){
+        //
+        var ValueEq = Number(req.body.from_value);
+        var CurrencyType = String(req.body.type);
+        var SubmittedBy = String(req.cookies['My details'].usrn);
+        data.getCountry(SubmittedBy,function(results){
+            console.log("Country " + String(results));
+            data.getCurrencyName(results,function(rest){
+                console.log("CurrencyName " + String(rest));
+                data.submit(SubmittedBy, rest, ValueEq,CurrencyType, "Company", function(reslts){
+                    if(reslts == true){
+                        var submittedTo = "";
+                        if(String(results) == "India"){
+                            submittedTo = "Priya";
+                        } else {
+                            submittedTo = "Perk";
+                        }
+                        data.notify("New Value Eq Submitted Company",submittedTo, function(resp){
+                            console.log("Submitted!!!!");
+                            console.log(resp);
+                            res.redirect("/company_submit.ejs");
+                        });
+                    } else {
+                        res.send("Invalid");
+                    }
+                });
+            });
+        });
     }
     
 });
@@ -616,22 +690,25 @@ app.post("/calc_ex_rate",function(req,res){
         data.getCurrencyName(results,function(rest){
             console.log("CurrencyName " + String(rest));
             data.submit(SubmittedBy, rest, TotalValueEq,CurrencyType, "CentralFinanceDepartment", function(reslts){
-                if(reslts == true){
-                    var submittedTo = "";
-                    if(String(results) == "India"){
-                        submittedTo = "Ramesh";
-                    } else {
-                        submittedTo = "Robin";
-                    }
-                    data.notify("New Value Eq Submitted TXNInventory",submittedTo, function(resp){
-                    console.log("Submitted!!!!");
-                    console.log(resp);
-
-                    // res.redirect("/authority_activity.ejs");
+                
+                    data.calculateExRate(function(exrates){
+                        if(exrates == true){
+                            
+                            var submittedTo = "";
+                            if(String(results) == "India"){
+                                submittedTo = "Ramesh";
+                            } else {
+                                submittedTo = "Robin";
+                            }
+                            data.notify("New Value Eq Submitted TXNInventory",submittedTo, function(resp){
+                                console.log("Submitted!!!!");
+                                console.log(resp);
+                                res.redirect("/authority_activity.ejs");
+                            });
+                        } 
                     });
-                } else {
-                    res.send("Invalid");
-                }
+                    
+                
                 });
             });
         });
